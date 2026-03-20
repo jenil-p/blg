@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "../App.css";
 
-
-const BASE_URL = import.meta.env.VITE_API_URL_FOR_IMAGE;
-
 export default function PostCard({ post }) {
     const navigate = useNavigate();
 
@@ -63,7 +60,7 @@ export default function PostCard({ post }) {
                 <img
                     className="img-fluid rounded mb-3"
                     style={{ maxHeight: '400px', width: '100%', objectFit: 'cover' }}
-                    src={`${BASE_URL}${post.image}`}
+                    src={post.image}
                     alt="post"
                 />
             }

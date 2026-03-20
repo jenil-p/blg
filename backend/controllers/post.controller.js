@@ -1,35 +1,35 @@
 import Post from "../models/Post.js";
 
 
-export const createPost = async (req, res) => {
-    try {
-    const { text } = req.body;
-    console.log("req for post came...");
+// export const createPost = async (req, res) => {
+//     try {
+//     const { text } = req.body;
+//     console.log("req for post came...");
 
-    let imageUrl = "";
+//     let imageUrl = "";
 
-    if (req.file) {
-        imageUrl = `/uploads/${req.file.filename}`;
-    }
+//     if (req.file) {
+//         imageUrl = `/uploads/${req.file.filename}`;
+//     }
 
-    if (!text && !imageUrl) {
-        return res
-            .status(400)
-            .json({ message: "Text or image required" });
-    }
+//     if (!text && !imageUrl) {
+//         return res
+//             .status(400)
+//             .json({ message: "Text or image required" });
+//     }
 
-    const post = await Post.create({
-        user: req.user.username,
-        text,
-        image: imageUrl
-    });
+//     const post = await Post.create({
+//         user: req.user.username,
+//         text,
+//         image: imageUrl
+//     });
 
-    res.json(post);
+//     res.json(post);
 
-    } catch (err) {
-        res.status(500).json(err.message);
-    }
-};
+//     } catch (err) {
+//         res.status(500).json(err.message);
+//     }
+// };
 
 
 
@@ -127,6 +127,40 @@ export const commentPost = async (req, res) => {
         });
 
         await post.save();
+
+        res.json(post);
+
+    } catch (err) {
+        res.status(500).json(err.message);
+    }
+};
+
+
+
+export const createPost = async (req, res) => {
+    try {
+        const { text } = req.body;
+        let imageUrl = "";
+
+        if (req.file) {
+            // Convert the file buffer to a Base64 string
+            const b64 = Buffer.from(req.file.buffer).toString('base64');
+            const mimeType = req.file.mimetype;
+            // Create a usable data URI for the frontend
+            imageUrl = `data:${mimeType};base64,${b64}`; 
+        }
+
+        if (!text && !imageUrl) {
+            return res.status(400).json({ message: "Text or image required" });
+        }
+
+        console.log(imageUrl);
+
+        const post = await Post.create({
+            user: req.user.username,
+            text,
+            image: imageUrl // This now saves the long string directly to Mongo
+        });
 
         res.json(post);
 

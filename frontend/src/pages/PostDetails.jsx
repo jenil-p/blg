@@ -3,8 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import "../App.css";
 
-const BASE_URL = import.meta.env.VITE_API_URL_FOR_IMAGE;
-
 export default function PostDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -76,7 +74,7 @@ export default function PostDetails() {
                 <div className="my-3" style={{ whiteSpace: 'pre-wrap' }}>{post.text}</div>
 
                 {post.image && (
-                    <img className="img-fluid rounded mb-3 w-100" src={`${BASE_URL}${post.image}`} alt="post" />
+                    <img className="img-fluid rounded mb-3 w-100" src={post.image} alt="post" />
                 )}
 
                 <div className="d-flex justify-content-between text-muted mt-2 border-top pt-3">
