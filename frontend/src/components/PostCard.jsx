@@ -52,7 +52,6 @@ export default function PostCard({ post, refresh }) {
                         </div>
                     </div>
                 </div>
-                <button className="btn btn-primary rounded-pill btn-sm fw-bold px-3">Follow</button>
             </div>
 
             {/* Text Content */}
