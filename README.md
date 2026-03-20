@@ -100,7 +100,7 @@ frontend/src/
 ### 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/jenil-p/blg.git
 cd project-folder
 ```
 
