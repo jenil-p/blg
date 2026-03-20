@@ -6,7 +6,7 @@ import "../App.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL_FOR_IMAGE;
 
-export default function PostCard({ post, refresh }) {
+export default function PostCard({ post }) {
     const navigate = useNavigate();
 
     const [isLiked, setIsLiked] = useState(post.isLiked || false);
@@ -23,7 +23,6 @@ export default function PostCard({ post, refresh }) {
 
         try {
             await API.put(`/posts/like/${post._id}`);
-            if (refresh) refresh();
         } catch (error) {
             setIsLiked(isLiked);
             setLikesCount(isLiked ? likesCount + 1 : likesCount - 1);
