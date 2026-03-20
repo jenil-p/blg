@@ -3,28 +3,28 @@ import Post from "../models/Post.js";
 
 export const createPost = async (req, res) => {
     // try {
-        const { text } = req.body;
-        console.log("req for post came...");
+    const { text } = req.body;
+    console.log("req for post came...");
 
-        let imageUrl = "";
+    let imageUrl = "";
 
-        if (req.file) {
-            imageUrl = `/uploads/${req.file.filename}`;
-        }
+    if (req.file) {
+        imageUrl = `/uploads/${req.file.filename}`;
+    }
 
-        if (!text && !imageUrl) {
-            return res
-                .status(400)
-                .json({ message: "Text or image required" });
-        }
+    if (!text && !imageUrl) {
+        return res
+            .status(400)
+            .json({ message: "Text or image required" });
+    }
 
-        const post = await Post.create({
-            user: req.user.username,
-            text,
-            image: imageUrl
-        });
+    const post = await Post.create({
+        user: req.user.username,
+        text,
+        image: imageUrl
+    });
 
-        res.json(post);
+    res.json(post);
 
     // } catch (err) {
     //     res.status(500).json(err.message);
@@ -32,10 +32,12 @@ export const createPost = async (req, res) => {
 };
 
 
+
 export const getFeed = async (req, res) => {
     try {
-
         const posts = await Post.find().sort({ createdAt: -1 });
+
+        const currentUser = req.user.username;
 
         const formattedPosts = posts.map(post => ({
             _id: post._id,
@@ -47,8 +49,7 @@ export const getFeed = async (req, res) => {
             likesCount: post.likes.length,
             commentsCount: post.comments.length,
 
-            likes: post.likes,
-            comments: post.comments
+            isLiked: post.likes.includes(currentUser)
         }));
 
         res.json(formattedPosts);
@@ -57,6 +58,30 @@ export const getFeed = async (req, res) => {
         res.status(500).json(err.message);
     }
 };
+
+export const getPostDetail = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const post = await Post.findById(postId);
+
+        const currentUser = req.user.username;
+
+        if (!post) {
+            return res.status(404).json({ message: "Post Not Found" });
+        }
+
+        const postResponse = {
+            ...post.toObject(),
+            likesCount: post.likes.length,
+            isLiked: post.likes.includes(currentUser)
+        };
+
+        res.json(postResponse);
+
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+}
 
 
 export const likePost = async (req, res) => {

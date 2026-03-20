@@ -1,7 +1,7 @@
 import express from "express";
 import { authMiddleware } from '../middleware/auth.middleware.js';
-import { commentPost, createPost, getFeed, likePost } from '../controllers/post.controller.js';
-// import { upload } from '../middleware/upload.middleware.js'
+import { commentPost, createPost, getFeed, likePost, getPostDetail } from '../controllers/post.controller.js';
+
 
 
 import multer from "multer";
@@ -38,13 +38,12 @@ const upload = multer({
     fileFilter
 });
 
-// export default upload;
 
 
 const router = express.Router();
 
-// router.post("/", authMiddleware, createPost);
 router.post("/", authMiddleware, upload.single("image"), createPost);
+router.get("/feed/:id", authMiddleware, getPostDetail);
 router.get("/feed", authMiddleware, getFeed);
 router.put("/like/:id", authMiddleware, likePost);
 router.post("/comment/:id", authMiddleware, commentPost);
