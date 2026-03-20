@@ -2,8 +2,9 @@ import Post from "../models/Post.js";
 
 
 export const createPost = async (req, res) => {
-    try {
+    // try {
         const { text } = req.body;
+        console.log("req for post came...");
 
         let imageUrl = "";
 
@@ -25,9 +26,9 @@ export const createPost = async (req, res) => {
 
         res.json(post);
 
-    } catch (err) {
-        res.status(500).json(err.message);
-    }
+    // } catch (err) {
+    //     res.status(500).json(err.message);
+    // }
 };
 
 
