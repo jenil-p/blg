@@ -68,7 +68,6 @@ export default function PostDetails() {
                             </div>
                         </div>
                     </div>
-                    <button className="btn btn-primary rounded-pill btn-sm fw-bold px-3">Follow</button>
                 </div>
 
                 <div className="my-3" style={{ whiteSpace: 'pre-wrap' }}>{post.text}</div>
